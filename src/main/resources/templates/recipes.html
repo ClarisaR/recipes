@@ -8,9 +8,10 @@
     <h1>Recipe List</h1>
     <ul th:if="${!recipes.isEmpty()}">
         <li th:each="recipe:${recipes}">
-
+            <h3 th:text="${recipe.getName()}"></h3>
+            <small th:text="${recipe.getDate().toString()}"></small>
         </li>
-
     </ul>
+    <a th:href="@{/recipes/new}">Create Recipe</a>
 </body>
 </html>
