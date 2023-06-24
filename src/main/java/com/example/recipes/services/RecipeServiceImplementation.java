@@ -1,13 +1,17 @@
 package com.example.recipes.services;
 
 import com.example.recipes.dto.RecipeDTO;
+import com.example.recipes.exceptions.RecipeNotFoundException;
 import com.example.recipes.models.Recipe;
 import com.example.recipes.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class RecipeServiceImplementation implements RecipeService {
     @Autowired
@@ -26,6 +30,34 @@ public class RecipeServiceImplementation implements RecipeService {
                 .preparation(recipeDTO.getPreparation())
                 .build();
         recipeRepository.save(recipe);
+    }
+
+    @Override
+    public Optional<Recipe> getRecipe(Long id) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+        return optionalRecipe;
+    }
+
+    @Override
+    public void updateRecipe(Long id, RecipeDTO recipeDTO, Recipe recipe) {
+        Recipe r = Recipe.builder()
+                .id(id)
+                .date(recipe.getDate())
+                .name(recipeDTO.getName())
+                .ingredients(recipeDTO.getIngredients())
+                .preparation(recipeDTO.getPreparation())
+                .build();
+        recipeRepository.save(r);
+    }
+
+    @Override
+    public void deleteRecipe(Recipe recipe) {
+        recipeRepository.delete(recipe);
+    }
+
+    @Override
+    public void deleteAllRecipes() {
+        recipeRepository.deleteAll();
     }
 
 }

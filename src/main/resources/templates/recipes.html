@@ -8,10 +8,13 @@
     <h1>Recipe List</h1>
     <ul th:if="${!recipes.isEmpty()}">
         <li th:each="recipe:${recipes}">
-            <h3 th:text="${recipe.getName()}"></h3>
+            <a th:href="@{/recipes/{id}(id=${recipe.id})}"><h3 th:text="${recipe.getName()}"></h3></a>
             <small th:text="${recipe.getDate().toString()}"></small>
         </li>
     </ul>
     <a th:href="@{/recipes/new}">Create Recipe</a>
+    <form th:action="@{/recipes/delete/all}" method="post">
+        <button type="submit">Delete All Recipes</button>
+    </form>
 </body>
 </html>

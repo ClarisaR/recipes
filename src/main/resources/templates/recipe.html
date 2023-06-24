@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Recipe</h1>
+    <form th:action="@{/recipes/{id}(id=${recipe.id})}" method="post">
+        <label for="date">Date:</label>
+        <input id="date" type="date" th:value="${#dates.format(recipe.date, 'yyyy-MM-dd')}" disabled>
+        <label for="name">Name:</label>
+        <input id="name" type="text" th:field="*{recipe.name}"/>
+        <label for="ingredients">Ingredients:</label>
+        <input id="ingredients" type="text" th:field="*{recipe.ingredients}"/>
+        <label for="preparation">Preparation:</label>
+        <input id="preparation" type="text" th:field="*{recipe.preparation}"/>
+        <button type="submit">Update Recipe</button>
+    </form>
+    <a th:href="@{/recipes}">Go to home</a>
+
+    <form th:action="@{/recipes/delete/{id}(id=${recipe.id})}" method="post">
+        <button type="submit">Delete Recipe</button>
+    </form>
+
+</body>
+</html>
