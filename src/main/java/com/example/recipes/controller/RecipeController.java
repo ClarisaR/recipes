@@ -4,7 +4,6 @@ import com.example.recipes.dto.RecipeDTO;
 import com.example.recipes.models.Recipe;
 import com.example.recipes.services.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +58,7 @@ public class RecipeController {
     public String deleteRecipe(@PathVariable("id")Long id, Model model){
         Optional<Recipe> optionalRecipe =recipeService.getRecipe(id);
         if(optionalRecipe.isEmpty()){
-            return "recipeNotExists";
+            return "recipeNotFound";
         }
         recipeService.deleteRecipe(optionalRecipe.get());
         List<Recipe> recipes = recipeService.getRecipes();

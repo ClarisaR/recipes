@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<head th:replace="~{ head_fragment :: common_header(~{::title}) }">
+    <title>Form New Recipe</title>
 </head>
 <body>
-    <h1>Create a Recipe!</h1>
-    <form th:action="@{/recipes}" method="post">
-        <label for="name">Name:</label>
-        <input id="name" type="text" th:field="*{recipe.name}"/>
-        <label for="ingredients">Ingredients:</label>
-        <input id="ingredients" type="text" th:field="*{recipe.ingredients}"/>
-        <label for="preparation">Preparation:</label>
-        <input id="preparation" type="text" th:field="*{recipe.preparation}"/>
-        <button type="submit">Save Recipe</button>
-    </form>
+<div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card p-3" style="width: 50%">
+        <h1>Create a Recipe!</h1>
+        <form th:action="@{/recipes}" method="post">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label>
+                <input id="name" type="text" class="form-control" th:field="*{recipe.name}"/>
+            </div>
+            <div class="mb-3">
+                <label for="ingredients" class="form-label">Ingredients:</label>
+                <input id="ingredients" type="text" class="form-control" th:field="*{recipe.ingredients}"/>
+            </div>
+            <div class="mb-3">
+                <label for="preparation" class="form-label">Preparation:</label>
+                <textarea id="preparation" type="text" class="form-control" th:field="*{recipe.preparation}"></textarea>
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Save Recipe</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
 </body>
 </html>
