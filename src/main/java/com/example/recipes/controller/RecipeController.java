@@ -1,11 +1,14 @@
 package com.example.recipes.controller;
 
-import com.example.recipes.dto.RecipeDTO;
-import com.example.recipes.models.Recipe;
-import com.example.recipes.services.RecipeService;
+import com.example.recipes.dto.RecipeCreateDTO;
+import com.example.recipes.dto.RecipeUpdateDTO;
+import com.example.recipes.model.Recipe;
+import com.example.recipes.service.RecipeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +26,16 @@ public class RecipeController {
     }
     @GetMapping("/recipes/new")
     public String getFormToCreateRecipe(Model model){
-        model.addAttribute("recipe", new RecipeDTO());
+        model.addAttribute("recipeDTO", new RecipeCreateDTO());
         return "formNewRecipe";
     }
     @PostMapping("/recipes")
-    public String createRecipe(RecipeDTO recipeDTO, Model model){
+    public String createRecipe(@Valid RecipeCreateDTO recipeDTO, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            return "formNewRecipe";
+        }
         recipeService.createRecipe(recipeDTO);
-        List<Recipe> recipes = recipeService.getRecipes();
+        List<com.example.recipes.model.Recipe> recipes = recipeService.getRecipes();
         model.addAttribute("recipes", recipes);
         return "recipes";
     }
@@ -43,13 +49,17 @@ public class RecipeController {
         return "recipe";
     }
     @PostMapping("/recipes/{id}")
-    public String updateRecipe(@PathVariable("id")Long id, Model model, RecipeDTO recipeDTO){
+    public String updateRecipe(@PathVariable("id")Long id, @Valid @ModelAttribute("recipe") RecipeUpdateDTO recipeUpdateDTO, BindingResult bindingResult, Model model){
         Optional<Recipe> optionalRecipe = recipeService.getRecipe(id);
         if(optionalRecipe.isEmpty()){
             return "recipeNotFound";
         }
-        model.addAttribute("recipe", optionalRecipe.get());
-        recipeService.updateRecipe(id, recipeDTO, optionalRecipe.get());
+        if(bindingResult.hasErrors()){
+            model.addAttribute("recipe", recipeUpdateDTO);
+            return "recipe";
+        }
+
+        recipeService.updateRecipe(id, recipeUpdateDTO, optionalRecipe.get());
         List<Recipe> recipes = recipeService.getRecipes();
         model.addAttribute("recipes", recipes);
         return "recipes";
@@ -61,14 +71,14 @@ public class RecipeController {
             return "recipeNotFound";
         }
         recipeService.deleteRecipe(optionalRecipe.get());
-        List<Recipe> recipes = recipeService.getRecipes();
+        List<com.example.recipes.model.Recipe> recipes = recipeService.getRecipes();
         model.addAttribute("recipes", recipes);
         return "recipes";
     }
     @PostMapping("/recipes/delete/all")
     public String deleteAllRecipes(Model model){
         recipeService.deleteAllRecipes();
-        List<Recipe> recipes = recipeService.getRecipes();
+        List<com.example.recipes.model.Recipe> recipes = recipeService.getRecipes();
         model.addAttribute("recipes", recipes);
         return "recipes";
     }

@@ -7,18 +7,21 @@
 <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
     <div class="card p-3" style="width: 50%">
         <h1>Create a Recipe!</h1>
-        <form th:action="@{/recipes}" method="post">
+        <form th:action="@{/recipes}" th:object="${recipeDTO}" method="post">
             <div class="mb-3">
                 <label for="name" class="form-label">Name:</label>
-                <input id="name" type="text" class="form-control" th:field="*{recipe.name}"/>
+                <input id="name" type="text" class="form-control" th:field="*{name}"/>
+                <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></p>
             </div>
             <div class="mb-3">
                 <label for="ingredients" class="form-label">Ingredients:</label>
-                <input id="ingredients" type="text" class="form-control" th:field="*{recipe.ingredients}"/>
+                <input id="ingredients" type="text" class="form-control" th:field="*{ingredients}"/>
+                <p th:if="${#fields.hasErrors('ingredients')}" th:errors="*{ingredients}" class="text-danger"></p>
             </div>
             <div class="mb-3">
                 <label for="preparation" class="form-label">Preparation:</label>
-                <textarea id="preparation" type="text" class="form-control" th:field="*{recipe.preparation}"></textarea>
+                <textarea id="preparation" type="text" class="form-control" th:field="*{preparation}"></textarea>
+                <p th:if="${#fields.hasErrors('preparation')}" th:errors="*{preparation}" class="text-danger"></p>
             </div>
             <button type="submit" class="btn btn-outline-primary">Save Recipe</button>
         </form>

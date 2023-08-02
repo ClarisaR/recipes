@@ -1,7 +1,8 @@
-package com.example.recipes.services;
+package com.example.recipes.service;
 
-import com.example.recipes.dto.RecipeDTO;
-import com.example.recipes.models.Recipe;
+import com.example.recipes.dto.RecipeCreateDTO;
+import com.example.recipes.dto.RecipeUpdateDTO;
+import com.example.recipes.model.Recipe;
 import com.example.recipes.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ public class RecipeServiceImplementation implements RecipeService {
     }
 
     @Override
-    public void createRecipe(RecipeDTO recipeDTO) {
+    public void createRecipe(RecipeCreateDTO recipeDTO) {
         Recipe recipe = Recipe.builder()
                 .date(new Date())
                 .name(recipeDTO.getName())
@@ -35,13 +36,13 @@ public class RecipeServiceImplementation implements RecipeService {
     }
 
     @Override
-    public void updateRecipe(Long id, RecipeDTO recipeDTO, Recipe recipe) {
+    public void updateRecipe(Long id, RecipeUpdateDTO recipeUpdateDTO, Recipe recipe) {
         Recipe r = Recipe.builder()
-                .id(id)
                 .date(recipe.getDate())
-                .name(recipeDTO.getName())
-                .ingredients(recipeDTO.getIngredients())
-                .preparation(recipeDTO.getPreparation())
+                .id(recipe.getId())
+                .name(recipeUpdateDTO.getName())
+                .ingredients(recipeUpdateDTO.getIngredients())
+                .preparation(recipeUpdateDTO.getPreparation())
                 .build();
         recipeRepository.save(r);
     }
